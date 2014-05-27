@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<relativePath>../org.example.expressions.parent/pom.xml</relativePath>
+		<groupId>org.example.expressions</groupId>
+		<artifactId>org.example.expressions.parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>org.example.expressions.tests</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
+
+	<dependencies>
+		<dependency>
+			<!-- needed for running plain Junit tests with Maven surefire plugin -->
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit-version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>xtend-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<executions>
+					<execution>
+						<!-- The execution id default-test must be left to tycho-surefire-plugin 
+							since it will execute it anyway -->
+						<id>MavenSurefirePluginTest</id>
+						<phase>test</phase>
+						<configuration>
+							<!-- tycho.testArgLine repeated to re-use the configuration for argLine 
+								for jacoco agent -->
+							<argLine>${tycho.testArgLine} ${memoryArgs}</argLine>
+							<testClassesDirectory>${project.build.outputDirectory}</testClassesDirectory>
+							<includes>
+								<include>**/tests/*Test.java</include>
+							</includes>
+							<excludes>
+								<exclude>**/Abstract*Test.java</exclude>
+								<exclude>**/ui/tests/*Test.java</exclude>
+							</excludes>
+						</configuration>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<!-- tycho.testArgLine repeated to re-use the configuration for argLine 
+						for jacoco agent -->
+					<argLine>${tycho.testArgLine} ${memoryArgs}</argLine>
+					<useUIHarness>true</useUIHarness>
+					<useUIThread>true</useUIThread>
+					<argLine>${memoryArgs}</argLine>
+					<includes>
+						<include>**/ui/tests/*Test.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

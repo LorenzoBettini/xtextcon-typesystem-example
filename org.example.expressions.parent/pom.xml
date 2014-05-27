@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.example.expressions</groupId>
+	<artifactId>org.example.expressions.parent</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>../org.example.expressions</module>
+		<module>../org.example.expressions.ui</module>
+		<module>../org.example.expressions.tests</module>
+	</modules>
+
+	<properties>
+		<tycho-version>0.19.0</tycho-version>
+		<tycho-extras-version>0.19.0</tycho-extras-version>
+		<maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>
+		<maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
+		<junit-version>4.11</junit-version>
+		<jacoco-version>0.5.8.201207111220</jacoco-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<memoryArgs>-Xms256M -Xmx1024M -XX:PermSize=256M -XX:MaxPermSize=256M -XX:+HeapDumpOnOutOfMemoryError</memoryArgs>
+		<xtext.version>2.6.0</xtext.version>
+		<platform-version>[3.9,4.0)</platform-version>
+		<fornax-oaw-m2-plugin-version>3.4.0</fornax-oaw-m2-plugin-version>
+		<mwe2.skip>false</mwe2.skip>
+
+		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>kepler</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/kepler</url>
+		</repository>
+		<repository>
+			<id>Xtext Update Site</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/
+			</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<!-- Repository to resolve fornax-oaw-m2-plugin -->
+		<!-- in case of SSL certificates errors, use -Dmaven.wagon.http.ssl.insecure=true 
+			-Dmaven.wagon.http.ssl.allowall=true -->
+		<pluginRepository>
+			<id>sonatype_releases</id>
+			<url>https://oss.sonatype.org/content/repositories/releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>fornax</id>
+			<url>http://www.fornax-platform.org/m2/repository</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- xtend-maven-plugin is in pluginManagement instead of in plugins 
+					so that it doesn't run before the exec-maven-plugin's *.mwe2 gen; this way 
+					we can list it after. -->
+
+				<plugin>
+					<groupId>org.eclipse.xtend</groupId>
+					<artifactId>xtend-maven-plugin</artifactId>
+					<version>${xtext.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>
+								<goal>xtend-install-debug-info</goal>
+								<goal>testCompile</goal>
+								<goal>xtend-test-install-debug-info</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<outputDirectory>xtend-gen</outputDirectory>
+					</configuration>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco-version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<!-- Where to put jacoco coverage report -->
+							<destFile>${sonar.jacoco.reportPath}</destFile>
+							<includes>
+								<include>org.example.expressions.*</include>
+							</includes>
+							<excludes>
+								<exclude>**/src-gen/**/*.java</exclude>
+								<exclude>**/org/eclipse/**/*.java</exclude>
+								<exclude>**.antlr**</exclude>
+								<exclude>**.parseTree**</exclude>
+								<exclude>**Abstract*RuntimeModule.java</exclude>
+								<exclude>**/*SetupGenerated*.java</exclude>
+								<exclude>**/Abstract*Validator.java</exclude>
+								<exclude>**/*GrammarAccess.java</exclude>
+								<exclude>**/Abstract*UiModule.java</exclude>
+								<exclude>**/Abstract*ProposalProvider.java</exclude>
+								<exclude>**/*Test.java</exclude>
+							</excludes>
+							<append>true</append>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+	</build>
+
+</project>
