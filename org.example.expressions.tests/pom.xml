@@ -68,7 +68,6 @@
 					<argLine>${tycho.testArgLine} ${memoryArgs}</argLine>
 					<useUIHarness>true</useUIHarness>
 					<useUIThread>true</useUIThread>
-					<argLine>${memoryArgs}</argLine>
 					<includes>
 						<include>**/ui/tests/*Test.java</include>
 					</includes>
