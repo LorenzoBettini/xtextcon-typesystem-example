@@ -79,6 +79,9 @@ class ExpressionsTypeProvider {
 	def isString(Type type) { type instanceof StringType }
 	def isBoolean(Type type) { type instanceof BoolType }
 	
+	/**
+	 * The expected type or null if there's no expectation
+	 */
 	def Type expectedType(Expression exp) {
 		expectedType(exp.eContainer, exp)
 	}
