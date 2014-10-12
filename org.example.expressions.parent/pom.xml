@@ -20,7 +20,7 @@
 		<jacoco-version>0.5.8.201207111220</jacoco-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<memoryArgs>-Xms256M -Xmx1024M -XX:PermSize=256M -XX:MaxPermSize=256M -XX:+HeapDumpOnOutOfMemoryError</memoryArgs>
-		<xtext.version>2.6.0</xtext.version>
+		<xtext.version>2.7.2</xtext.version>
 		<platform-version>[3.9,4.0)</platform-version>
 		<fornax-oaw-m2-plugin-version>3.4.0</fornax-oaw-m2-plugin-version>
 		<mwe2.skip>false</mwe2.skip>
